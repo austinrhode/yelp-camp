@@ -7,13 +7,18 @@ const mongoose = require("mongoose");
 const ejsMate = require('ejs-mate');
 const campgroundRouter = require('./routes/campgrounds');
 const reviewRouter = require('./routes/reviews')
+const userRouter = require('./routes/users');
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session')
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => { console.log("MONGO CONNECTED") })
 .catch((err) => { console.log(err)} );
+mongoose.set('useCreateIndex', true);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +41,14 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser());
+
 app.listen(port, () => {
     console.log("LISTENING ON PORT", port);
 })
@@ -50,6 +63,8 @@ app.get("/", (req, res) => {
     res.render("home");
 })
 
+
+app.use('/', userRouter);
 app.use('/campgrounds', campgroundRouter);
 app.use('/campgrounds/:id/reviews', reviewRouter);
 
