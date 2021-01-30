@@ -4,16 +4,19 @@
         <div class="card mb-3">
             <img src="<%= campground.image %>" class= "img-fluid" alt="image of a campground">
                 <div class="card-body">
-                    <h5 class="card-title"><%= campground.title %> <span class="float-end">Price: $<%= campground.price %> </span></h5>
+                    <h5 class="card-title"><%= campground.title %> <span class="float-end">Posted by: <%= campground.author.username %> Price: $<%= campground.price %> </span></h5>
                     <p class="card-text"><%= campground.description %> </p>
+                    <% if(user && campground.author.equals(user._id)) {%> 
                     <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-primary">Edit Campground</a>
                     <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
                         <button class="btn btn-danger">Delete</button>
                     </form>
+                    <% } %> 
                 </div>
           </div>
     </div>
     <div class="col-6">
+        <%  if(user) { %>
         <div class="card mb-3">
             <div class="card-body">
                 <h2 class="card-title">Leave a Review</h2>
@@ -30,14 +33,17 @@
                 </form>
             </div>
         </div>
+        <% } %> 
         <% for (let review of campground.reviews) { %> 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Rating: <%= review.rating %> stars </h5>
+                    <h5 class="card-title">Rating: <%= review.rating %> stars <span class="text-muted float-end">By <%= review.author.username %> </span></h5>
                     <p class="card-text">Review: <%= review.body %> </p>
+                    <% if(user && review.author.equals(user._id)) {%>
                     <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                    <% } %> 
                 </div>
             </div>
         <% } %> 
