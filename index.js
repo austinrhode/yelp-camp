@@ -18,11 +18,15 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const MongoSession = require('connect-mongo')(session);
 
 const expressMongoSanitize = require('express-mongo-sanitize');
 const helmet = require("helmet");
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {useNewUrlParser: true, useUnifiedTopology: true})
+const DBUrl = process.env.DB_URL;
+// const DBUrl = 'mongodb://localhost:27017/yelp-camp'
+
+mongoose.connect(DBUrl, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => { console.log("MONGO CONNECTED") })
 .catch((err) => { console.log(err)} );
 mongoose.set('useCreateIndex', true);
@@ -35,9 +39,19 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+const secret = process.env.SECRET;
+
+const store = new MongoSession({
+    url: DBUrl,
+    secret,
+    touchAfter: 60 * 60 * 24
+})
+
 const sessionConfig = {
+    store,
     name: 's_id',
-    secret: "thiswillchangebeforedeployment",
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -47,6 +61,7 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
 app.use(session(sessionConfig))
 app.use(flash());
 
@@ -60,6 +75,7 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net/",
+    "https://stackpath.bootstrapcdn.com/",
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -68,6 +84,7 @@ const styleSrcUrls = [
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
 ];
 const connectSrcUrls = [
     "https://api.mapbox.com/",
