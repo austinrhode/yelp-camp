@@ -2,34 +2,34 @@
 <div class="row">
     <div class="col-6 offset-3">
         <h1 class="text-center">New Campground</h1>
-    </div>
-    <form action="/campgrounds" method="post" novalidate class="needs-validation">
-        <div class="mb-3">
-            <label class="form-label" for="title">Title</label>
-            <input class="form-control" type="text" id="title" name="campground[title]" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="location">Location</label>
-            <input class="form-control" type="text" id="location" name="campground[location]" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="price">Price</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">$</span>
-                <input class="form-control" type="number" id="price" name="campground[price]" aria-label="Price" aria-describedby="basic-addon1" required>
-
+        <form action="/campgrounds" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="campground[title]" required>
             </div>
-        </div>
-        
-        <div class="mb-3">
-            <label class="form-label" for="image">Image URL</label>
-            <input class="form-control" type="text" id="image" name="campground[image]" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="campground[description]" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="campground[location]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="price">Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">$</span>
+                    <input class="form-control" type="number" id="price" name="campground[price]" aria-label="Price" aria-describedby="basic-addon1" required>
+
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" for="image">Image</label>
+                <input class="form-control-file" type="file" id="image" name="image" multiple>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="campground[description]" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
 </div>
 
