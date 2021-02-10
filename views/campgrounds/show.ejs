@@ -23,21 +23,21 @@
             <% } %> 
           </div>
         <div class="card mb-3">            
-                <div class="card-body">
-                    <h5 class="card-title"><%= campground.title %><span class="float-end">Price: $<%= campground.price %> </span></h5>
-                    <p class="card-text"><%= campground.description %> </p>
-                    <div class="d-flex justify-content-between">
-                        <% if(user && campground.author.equals(user._id)) {%> 
-                            <div> <!-- Put these in a div so the button would be grouped -->
-                                <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-primary">Edit Campground</a>
-                                <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post" class="d-inline">
-                                    <button class="btn btn-danger">Delete</button>
-                                </form>
-                            </div>
-                        <% } %>
-                        <span class="text-muted">Posted by: <%= campground.author.username %> </span>
+            <div class="card-body">
+                <h5 class="card-title"><%= campground.title %><span class="float-end">Price: $<%= campground.price %> </span></h5>
+                <p class="card-text"><%= campground.description %> </p>
+                <% if(user && campground.author.equals(user._id)) {%> 
+                    <div> 
+                        <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-primary">Edit Campground</a>
+                        <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post" class="d-inline">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
+                <% } %>
+                <div class="d-flex justify-content-end">
+                    <span class="text-muted">Posted by: <%= campground.author.username %> </span>
                 </div>
+            </div>
           </div>
     </div>
     <div class="col-md-12 col-lg-6">
@@ -77,14 +77,14 @@
                         Rating:<span class="starability-result float-end" data-rating=<%= review.rating %>>Rated <%= review.rating %> stars</span>
                     </h5>
                     <p class="card-text py-2"><%= review.body %> </p>
-                    <div class="d-flex justify-content-between">
                         <% if(user && review.author.equals(user._id)) {%>
                             <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
-                            <% } %>
+                        <% } %>
+                        <div class="d-flex justify-content-end">
                             <span class="text-muted">By <%= review.author.username %></span>
-                    </div>
+                        </div>
                 </div>
             </div>
         <% } %> 
